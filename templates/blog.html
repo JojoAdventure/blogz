@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Latest posts</h2>
+
+{% if posts|length == 0 %}
+<p>No posts here!</p>
+{% else %}
+
+<ul>
+  {% for BlogPost in posts %}
+  <li>
+    <h3><a href="/{{ BlogPost.key().id() }}">{{ BlogPost.name }}</a></h3>
+    <strong><p>{{ BlogPost.content }}</p></strong>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endif %}
+
+<a href="/newpost">Add A New Post!</a>
+{% endblock %}
