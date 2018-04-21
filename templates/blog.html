@@ -8,15 +8,15 @@
 {% else %}
 
 <ul>
-  {% for BlogPost in posts %}
+  {% for post in posts %}
   <li>
-    <h3><a href="/{{ BlogPost.key().id() }}">{{ BlogPost.name }}</a></h3>
-    <strong><p>{{ BlogPost.content }}</p></strong>
+    <h3><a href="/blog?id={{ post.id }}">{{ post.name }}</a></h3>
+    <strong><p>{{ post.body }}</p></strong>
   </li>
   {% endfor %}
 </ul>
 
 {% endif %}
 
-<a href="/newpost">Add A New Post!</a>
+<a href="/blog/newpost">Add A New Post!</a>
 {% endblock %}

@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:asdf@localhost:8888/build-a-blog'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:asdf@localhost:8889/build-a-blog'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -13,32 +13,49 @@ class BlogPost(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
-    completed = db.Column(db.Boolean)
+    body = db.Column(db.String(120))
 
-    def __init__(self, name):
+    def __init__(self, name, body):
         self.name = name
-        self.completed = False
-        
-posts = []
+        self.body = body
 
-@app.route('/newpost', methods=['POST', 'GET'])
+@app.route('/blog/newpost', methods=['POST', 'GET'])
 def NewPost():
+    if request.method == 'POST':
+        isError = False
+        title = request.form['post_title']
+        body = request.form['post_body']
+        terror = ''
+        berror = ''
+
+        if title == '':
+            terror = "Type something will ya!"
+            isError = True
+        if body == '':
+            berror = "Type something will ya!"
+            isError = True
+
+        if isError:
+            return render_template('newpost.html', terror=terror, berror=berror, post_title=title, body=body)
+        else:
+            new_blogpost = BlogPost(title, body)
+            db.session.add(new_blogpost)
+            db.session.commit()
+            posts = BlogPost.query.all()
+            last = posts[len(posts)-1]
+            return redirect('/blog?id=' + str(last.id))
+
     return render_template('newpost.html', title='New Post')
 
-@app.route('/viewpost', methods=['POST', 'GET'])
-def ViewPost():
-    return render_template('blogpost.html', title='View Post')
-
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/blog', methods=['POST', 'GET'])
 def index():
 
-    if request.method == 'POST':
-        blogpost_name = request.form['blogpost']
-        new_blogpost = BlogPost(blogpost_name)
-        db.session.add(new_blogpost)
-        db.session.commit()
-        posts.append(new_blogpost)
-
+    if request.args.get('id'):
+        post_id = request.args.get('id')
+        post = BlogPost.query.get(int(post_id))
+        return render_template('blogpost.html', post = post, title='asdfasdfadsf')
+    
+    posts = BlogPost.query.all()
     return render_template('blog.html',title="Build A Blog", posts=posts)
         
 if __name__ == '__main__':

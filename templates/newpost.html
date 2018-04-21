@@ -2,17 +2,18 @@
 {% block content %}
 
 <h1>New Post</h1>
-<form action="/newpost" method="post">
+<form action="/blog/newpost" method="post">
     <label>
     New Post Title: <br>
-    <input type="text" name="new-post-title"/>
+    <input name="post_title" type="text" value = '{{post_title}}'>
+    <td class="error">{{terror}}</td>
   </label><br>
     <label>
     Post Body:<br>
-    <textarea rows="10" columns="40" name="new-post" style="margin-left: 0px; margin-right: 0px; width: 450px;" name="new-post"></textarea>
+    <textarea rows="10" columns="40" style="margin-left: 0px; margin-right: 0px; width: 450px;" name="post_body">{{ body }}</textarea>
+    <td class="error">{{berror}}</td>
   </label><br>
-    <input type="submit" value="Add" />
+    <input type="submit" value="Add it!" />
 </form>
-<p class="error">{{ error if error else "" }}</p>
 
 {% endblock %}
