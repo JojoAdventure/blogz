@@ -4,6 +4,7 @@
 <h2>{{ post.name }}</h2><br>
 <strong>{{ post.body }}</strong>
 <br/>
+<h3>Written by <a href='/?user={{ post.user.id }}'>{{ post.user.username }}</a></h3>
 <p><a href="/blog">Back to Blog</a></p>
 
 {% endblock %}

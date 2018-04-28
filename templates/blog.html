@@ -12,6 +12,7 @@
   <li>
     <h3><a href="/blog?id={{ post.id }}">{{ post.name }}</a></h3>
     <strong><p>{{ post.body }}</p></strong>
+    <h6>Written by <a href="/?user={{ post.user_id }}">{{ post.user.username }}</a></h6>
   </li>
   {% endfor %}
 </ul>
@@ -19,4 +20,7 @@
 {% endif %}
 
 <a href="/blog/newpost">Add A New Post!</a>
+<br>
+<a href="/">User List</a>
+
 {% endblock %}
